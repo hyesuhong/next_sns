@@ -25,7 +25,7 @@ export default function Page() {
 					<h1 className='mb-24 text-4xl font-bold'>Create account</h1>
 					<form
 						onSubmit={handleSubmit(onSubmit)}
-						className='flex flex-col gap-4'
+						className='flex flex-col gap-3'
 					>
 						<InputField
 							label='Email'
