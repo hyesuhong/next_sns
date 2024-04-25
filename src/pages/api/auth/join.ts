@@ -1,10 +1,17 @@
+import client from '@/libs/server/client';
 import withHandler from '@/libs/server/withHandler';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const { name, email } = req.body;
-	console.log(name, email);
-	return res.status(200).json({ name, email });
+
+	const user = await client.user.create({
+		data: {
+			name,
+			email,
+		},
+	});
+	return res.status(201).json({ name, email });
 }
 
 export default withHandler({ method: 'POST', handler });

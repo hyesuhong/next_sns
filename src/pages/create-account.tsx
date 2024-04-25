@@ -1,11 +1,14 @@
 import { Button, CustomLink, Divider, InputField } from '@/components';
+import useFetch from '@/libs/client/useFetch';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 type JoinInputs = {
 	email: string;
-	password: string;
 	name: string;
 };
+
+const URL = '/api/auth/join';
 
 export default function Page() {
 	const {
@@ -13,10 +16,21 @@ export default function Page() {
 		formState: { errors },
 		handleSubmit,
 	} = useForm<JoinInputs>();
+	const { fetchState, post } = useFetch<unknown>(URL, {
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
 
 	const onSubmit: SubmitHandler<JoinInputs> = (data) => {
 		console.log(data);
+
+		post(JSON.stringify(data));
 	};
+
+	useEffect(() => {
+		console.log(fetchState);
+	}, [fetchState]);
 
 	return (
 		<main className='flex h-screen justify-end '>
@@ -33,14 +47,6 @@ export default function Page() {
 							required
 							register={register}
 							errorMessege={errors.email?.message}
-						/>
-						<InputField
-							label='Password'
-							name='password'
-							type='password'
-							required
-							register={register}
-							errorMessege={errors.password?.message}
 						/>
 						<InputField
 							label='Name'
