@@ -1,18 +1,23 @@
 import { useState } from 'react';
+import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
-type InputProps = {
+type InputProps<T extends FieldValues> = {
 	label?: string;
-	name: string;
+	name: Path<T>;
 	type?: React.HTMLInputTypeAttribute;
+	required?: boolean;
 	errorMessege?: string;
+	register: UseFormRegister<T>;
 };
 
-export default function InputField({
+export default function InputField<T extends FieldValues>({
 	label,
 	name,
 	type,
+	required,
 	errorMessege,
-}: InputProps) {
+	register,
+}: InputProps<T>) {
 	const [isEmpty, setIsEmpty] = useState(true);
 
 	const onChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,9 +34,14 @@ export default function InputField({
 		<div className='relative'>
 			<input
 				type={type}
-				name={name}
-				onChange={onChange}
 				className='peer-blank peer h-10 w-full rounded-[4px] border border-slate-200 bg-transparent px-4 text-sm outline-none focus:border-violet-400'
+				{...register(name, {
+					required: {
+						value: required || false,
+						message: `${name} is required`,
+					},
+					onChange,
+				})}
 			/>
 			{label && (
 				<label
