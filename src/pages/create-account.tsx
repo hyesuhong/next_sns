@@ -1,32 +1,42 @@
 import { Button, CustomLink, Divider, InputField } from '@/components';
 import useFetch from '@/libs/client/useFetch';
 import { Join } from '@/types/auth';
-import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 const URL = '/api/auth/join';
 
 export default function Page() {
+	const router = useRouter();
+	const [errorMessage, setErrorMessage] = useState<string>();
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
 	} = useForm<Join>();
-	const { fetchState, post } = useFetch<unknown>(URL, {
+	const { fetchState, post } = useFetch(URL, {
 		headers: {
 			'Content-Type': 'application/json',
 		},
 	});
 
-	const onSubmit: SubmitHandler<Join> = (data) => {
+	const onSubmit: SubmitHandler<Join> = async (data) => {
 		console.log(data);
 
-		post(JSON.stringify(data));
+		await post(JSON.stringify(data));
 	};
 
 	useEffect(() => {
-		console.log(fetchState);
-	}, [fetchState]);
+		if (!fetchState.isLoading) {
+			if (fetchState.error) {
+				setErrorMessage(fetchState.error.message);
+			}
+			if (fetchState.response) {
+				router.push('/log-in').catch(console.error);
+			}
+		}
+	}, [fetchState, router]);
 
 	return (
 		<main className='flex h-screen justify-end '>
@@ -51,7 +61,14 @@ export default function Page() {
 							register={register}
 							errorMessege={errors.name?.message}
 						/>
-						<Button className='mt-4'>Create account</Button>
+						<div className='mt-4 text-center'>
+							{errorMessage && (
+								<span className='text-xs text-red-400'>{errorMessage}</span>
+							)}
+							<Button disabled={fetchState.isLoading}>
+								{fetchState.isLoading ? 'Loading...' : 'Create account'}
+							</Button>
+						</div>
 					</form>
 					<Divider className='my-10' />
 					<p className='mb-2 text-sm'>Already have an account?</p>

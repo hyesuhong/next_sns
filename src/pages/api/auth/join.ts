@@ -16,7 +16,14 @@ async function handler(req: JoinRequest, res: NextApiResponse) {
 			email,
 		},
 	});
-	return res.status(201).json({ name, email });
+
+	const successRes = {
+		data: { name, email },
+		status: 201,
+		statusText: 'Created',
+	};
+
+	return res.status(201).json(successRes);
 }
 
 export default withHandler({ method: 'POST', handler });
