@@ -1,8 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
+type ApiHandler = (
+	req: NextApiRequest,
+	res: NextApiResponse
+) => void | Promise<void>;
+
 type ConfigType = {
 	method: 'GET' | 'POST' | 'PUT' | 'DELETE';
-	handler: (req: NextApiRequest, res: NextApiResponse) => void;
+	handler: ApiHandler;
 };
 
 export default function withHandler({ method, handler }: ConfigType) {
@@ -12,7 +17,7 @@ export default function withHandler({ method, handler }: ConfigType) {
 		}
 
 		try {
-			handler(req, res);
+			await handler(req, res);
 		} catch (error) {
 			console.error(error);
 			return res.status(500).json({ error });
