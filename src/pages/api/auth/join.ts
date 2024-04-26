@@ -1,14 +1,14 @@
 import client from '@/libs/server/client';
 import withHandler from '@/libs/server/withHandler';
+import { Join } from '@/types/auth';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-type JoinParams = {
-	name: string;
-	email: string;
-};
+interface JoinRequest extends NextApiRequest {
+	body: Join;
+}
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const { name, email } = req.body as JoinParams;
+async function handler(req: JoinRequest, res: NextApiResponse) {
+	const { name, email } = req.body;
 
 	await client.user.create({
 		data: {

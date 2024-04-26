@@ -1,12 +1,8 @@
 import { Button, CustomLink, Divider, InputField } from '@/components';
 import useFetch from '@/libs/client/useFetch';
+import { Join } from '@/types/auth';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
-type JoinInputs = {
-	email: string;
-	name: string;
-};
 
 const URL = '/api/auth/join';
 
@@ -15,14 +11,14 @@ export default function Page() {
 		register,
 		formState: { errors },
 		handleSubmit,
-	} = useForm<JoinInputs>();
+	} = useForm<Join>();
 	const { fetchState, post } = useFetch<unknown>(URL, {
 		headers: {
 			'Content-Type': 'application/json',
 		},
 	});
 
-	const onSubmit: SubmitHandler<JoinInputs> = (data) => {
+	const onSubmit: SubmitHandler<Join> = (data) => {
 		console.log(data);
 
 		post(JSON.stringify(data));

@@ -1,19 +1,15 @@
 import { Button, CustomLink, Divider, InputField } from '@/components';
+import { Login } from '@/types/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
-type LoginInputs = {
-	email: string;
-	password: string;
-};
 
 export default function Page() {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<LoginInputs>();
+	} = useForm<Login>();
 
-	const onSubmit: SubmitHandler<LoginInputs> = (data) => {
+	const onSubmit: SubmitHandler<Login> = (data) => {
 		console.log(data);
 	};
 
@@ -32,14 +28,6 @@ export default function Page() {
 							required
 							register={register}
 							errorMessege={errors.email?.message}
-						/>
-						<InputField
-							label='Password'
-							name='password'
-							type='password'
-							required
-							register={register}
-							errorMessege={errors.password?.message}
 						/>
 
 						<Button className='mt-4'>Login</Button>
