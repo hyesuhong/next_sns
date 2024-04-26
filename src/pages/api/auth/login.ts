@@ -23,6 +23,22 @@ async function handler(req: LoginRequest, res: NextApiResponse) {
 		return res.status(404).json({ code: 404, message: 'Not Found' });
 	}
 
+	const payload = Math.floor(100000 + Math.random() * 900000) + '';
+	const token = await client.token.create({
+		data: {
+			payload,
+			user: {
+				connect: {
+					id: user.id,
+				},
+			},
+		},
+	});
+
+	if (!token) {
+		return res.status(404).json({ code: 404, message: 'Cannot find token' });
+	}
+
 	session.user = {
 		id: user.id,
 		name: user.name,
