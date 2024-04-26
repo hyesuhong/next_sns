@@ -1,6 +1,8 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { getIronSession } from 'iron-session';
 import { NextApiRequest, NextApiResponse } from 'next';
 import prismaErrorHandler from './prismaErrorHandler';
+import { SessionData, sessionOptions } from './session';
 
 type ApiHandler = (
 	req: NextApiRequest,
@@ -10,6 +12,7 @@ type ApiHandler = (
 type ConfigType = {
 	method: 'GET' | 'POST' | 'PUT' | 'DELETE';
 	handler: ApiHandler;
+	isPrivate?: boolean;
 };
 
 const notAllowedMethod = {
@@ -17,12 +20,27 @@ const notAllowedMethod = {
 	message: 'Method Not Allowed',
 };
 
+const unauthorized = {
+	code: 401,
+	message: 'Unauthorized',
+};
+
 const baseServerError = { code: 500, message: 'Internal Server Error' };
 
-export default function withHandler({ method, handler }: ConfigType) {
+export default function withHandler({
+	method,
+	handler,
+	isPrivate = true,
+}: ConfigType) {
 	return async function (req: NextApiRequest, res: NextApiResponse) {
+		const session = await getIronSession<SessionData>(req, res, sessionOptions);
+
 		if (req.method !== method) {
 			return res.status(405).json(notAllowedMethod);
+		}
+
+		if (isPrivate && !session.isLoggedIn) {
+			return res.status(401).json(unauthorized);
 		}
 
 		try {

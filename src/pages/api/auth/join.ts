@@ -26,4 +26,4 @@ async function handler(req: JoinRequest, res: NextApiResponse) {
 	return res.status(201).json(successRes);
 }
 
-export default withHandler({ method: 'POST', handler });
+export default withHandler({ method: 'POST', handler, isPrivate: false });
