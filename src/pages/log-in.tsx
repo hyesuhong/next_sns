@@ -1,17 +1,42 @@
 import { Button, CustomLink, Divider, InputField } from '@/components';
+import useFetch from '@/libs/client/useFetch';
 import { Login } from '@/types/auth';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+const URL = '/api/auth/login';
+
 export default function Page() {
+	const router = useRouter();
+	const [errorMessage, setErrorMessage] = useState<string>();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<Login>();
+	const { fetchState, post } = useFetch(URL, {
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
 
-	const onSubmit: SubmitHandler<Login> = (data) => {
+	const onSubmit: SubmitHandler<Login> = async (data) => {
 		console.log(data);
+
+		await post(JSON.stringify(data));
 	};
+
+	useEffect(() => {
+		if (!fetchState.isLoading) {
+			if (fetchState.error) {
+				setErrorMessage(fetchState.error.message);
+			}
+			if (fetchState.response) {
+				router.push('/').catch(console.error);
+			}
+		}
+	}, [router, fetchState]);
 
 	return (
 		<main className='flex h-screen justify-end'>
@@ -29,8 +54,14 @@ export default function Page() {
 							register={register}
 							errorMessege={errors.email?.message}
 						/>
-
-						<Button className='mt-4'>Login</Button>
+						<div className='mt-4 text-center'>
+							{errorMessage && (
+								<span className='text-xs text-red-400'>{errorMessage}</span>
+							)}
+							<Button disabled={fetchState.isLoading}>
+								{fetchState.isLoading ? 'Loading...' : 'Login'}
+							</Button>
+						</div>
 					</form>
 					<Divider className='my-10' />
 					<p className='mb-2 text-sm'>Don’t have an account?</p>
