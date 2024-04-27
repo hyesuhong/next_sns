@@ -39,9 +39,9 @@ export default function Page() {
 	}, [fetchState, router]);
 
 	return (
-		<main className='flex h-screen justify-end '>
-			<section className='flex flex-[0_0_50%] rounded-tl-[100px] border border-black'>
-				<div className='m-auto flex w-[260px] flex-col items-center justify-center'>
+		<main className='flex h-screen justify-end bg-sns-charcoal'>
+			<section className='flex flex-[0_0_50%] rounded-tl-[100px] bg-sns-grey-dark'>
+				<div className='m-auto flex w-[260px] flex-col items-center justify-center text-sns-white'>
 					<h1 className='mb-24 text-4xl font-bold'>Create account</h1>
 					<form
 						onSubmit={handleSubmit(onSubmit)}
@@ -63,7 +63,7 @@ export default function Page() {
 						/>
 						<div className='mt-4 text-center'>
 							{errorMessage && (
-								<span className='text-xs text-red-400'>{errorMessage}</span>
+								<span className='text-xs text-sns-red'>{errorMessage}</span>
 							)}
 							<Button disabled={fetchState.isLoading}>
 								{fetchState.isLoading ? 'Loading...' : 'Create account'}

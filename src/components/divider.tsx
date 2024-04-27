@@ -3,5 +3,7 @@ type DividerProps = {
 };
 
 export default function Divider({ className }: DividerProps) {
-	return <hr className={`w-full border-t border-t-zinc-700 ${className}`} />;
+	return (
+		<hr className={`w-full border-t border-sns-grey-light ${className}`} />
+	);
 }

@@ -21,7 +21,7 @@ export default function InputField<T extends FieldValues>({
 		<div className='relative pb-4'>
 			<input
 				type={type}
-				className='h-10 w-full rounded-[4px] border border-slate-200 bg-transparent px-4 text-sm outline-none focus:border-violet-400'
+				className='h-10 w-full rounded-[4px] border border-sns-white bg-transparent px-4 text-sm outline-none focus:border-sns-lavendar-dark'
 				{...register(name, {
 					required: {
 						value: required || false,
@@ -30,12 +30,12 @@ export default function InputField<T extends FieldValues>({
 				})}
 			/>
 			{label && (
-				<label className='absolute left-3 top-0 -translate-y-1/2 bg-white px-1 text-xs'>
+				<label className='absolute left-3 top-0 -translate-y-1/2 bg-sns-grey-dark px-1 text-xs'>
 					{label}
 				</label>
 			)}
 			{errorMessege && (
-				<span className='absolute bottom-0 left-0 text-xs text-red-400'>
+				<span className='absolute bottom-0 left-0 text-xs text-sns-red'>
 					{errorMessege}
 				</span>
 			)}
