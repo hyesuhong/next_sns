@@ -1,4 +1,4 @@
-import { Button, CustomLink, Divider, InputField } from '@/components';
+import { Button, CustomLink, Divider, InputField } from '@/components/common';
 import useFetch from '@/libs/client/useFetch';
 import { Login } from '@/types/auth';
 import { useRouter } from 'next/router';
