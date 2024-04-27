@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 const URL = '/api/auth/join';
+const emailRegexp = /^\S+@\S+\.\S+$/;
 
 export default function Page() {
 	const router = useRouter();
@@ -50,15 +51,24 @@ export default function Page() {
 						<InputField
 							label='Email'
 							name='email'
-							required
 							register={register}
+							options={{
+								required: 'Email is required.',
+								pattern: {
+									value: emailRegexp,
+									message:
+										'Please write down correct email format(ex. example@mail.com)',
+								},
+							}}
 							errorMessege={errors.email?.message}
 						/>
 						<InputField
 							label='Name'
 							name='name'
-							required
 							register={register}
+							options={{
+								required: 'Name is required',
+							}}
 							errorMessege={errors.name?.message}
 						/>
 						<div className='mt-4 text-center'>
