@@ -9,6 +9,7 @@
 		"lint": "next lint",
 		"format": "prettier --cache --write 'src/**'",
 		"prepare": "husky",
+		"postinstall": "prisma generate",
 		"db-sync": "prisma migrate dev"
 	},
 	"lint-staged": {
