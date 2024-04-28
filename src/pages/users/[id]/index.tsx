@@ -5,7 +5,7 @@ import useAuthSession from '@/libs/client/useAuthSession';
 import useFetch from '@/libs/client/useFetch';
 import { PostType } from '@/types/post';
 import { useRouter } from 'next/router';
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 type ResponseData = {
 	data: PostType[];
@@ -25,12 +25,15 @@ export default function Page() {
 			'Content-Type': 'application/json',
 		},
 	});
+	const [isInitialRender, setIsInitialRender] = useState(true);
 
 	useEffect(() => {
-		if (id) {
+		if (id && isInitialRender) {
+			setIsInitialRender(false);
 			get().catch(console.error);
 		}
-	}, [id, get]);
+	}, [id, get, isInitialRender]);
+
 	return (
 		<GeneralLayout>
 			<section className='mx-auto max-w-4xl overflow-hidden rounded border border-sns-grey-dark'>

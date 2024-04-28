@@ -4,7 +4,7 @@ import { FeedForm, Post } from '@/components/post';
 import useAuthSession from '@/libs/client/useAuthSession';
 import useFetch from '@/libs/client/useFetch';
 import { PostType } from '@/types/post';
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 type ResponseData = {
 	data: PostType[];
@@ -22,12 +22,14 @@ export default function Page() {
 			'Content-Type': 'application/json',
 		},
 	});
+	const [isInitialRender, setIsInitialRender] = useState(true);
 
 	useEffect(() => {
-		if (user) {
+		if (user && isInitialRender) {
+			setIsInitialRender(false);
 			get().catch(console.error);
 		}
-	}, [user, get]);
+	}, [user, get, isInitialRender]);
 
 	return (
 		<GeneralLayout>
