@@ -28,15 +28,11 @@ export default function Post({
 		fetcher
 	);
 	const likesUsers = data ? data.data.LikesOnPosts : LikesOnPosts;
-	// console.log(data, data?.LikesOnPosts, LikesOnPosts);
+
 	const ownerLiked = likesUsers.findIndex(
 		(post) => post.userId === loggedInUserId
 	);
-	const {
-		fetchState,
-		post,
-		delete: likeDelete,
-	} = useFetch(`/api/posts/${id}/like`, {
+	const { post, delete: likeDelete } = useFetch(`/api/posts/${id}/like`, {
 		headers: {
 			'Content-Type': 'application/json',
 		},
@@ -44,7 +40,7 @@ export default function Post({
 
 	const onLikeClick = () => {
 		if (ownerLiked > -1) {
-			likeDelete();
+			likeDelete().catch(console.error);
 			if (data) {
 				mutate({
 					data: {
@@ -55,10 +51,10 @@ export default function Post({
 							...data.data.LikesOnPosts.slice(ownerLiked + 1),
 						],
 					},
-				});
+				}).catch(console.error);
 			}
 		} else {
-			post();
+			post().catch(console.error);
 			if (data) {
 				mutate({
 					data: {
@@ -69,13 +65,13 @@ export default function Post({
 							{ userId: loggedInUserId },
 						],
 					},
-				});
+				}).catch(console.error);
 			}
 		}
 	};
 
 	return (
-		<article className='p-4' data-post-id={id}>
+		<article className='rounded p-4 transition-colors hover:bg-sns-grey-dark'>
 			<div className='flex items-center gap-x-2'>
 				<Link href={`/users/${userId}`} className='flex items-center gap-x-4'>
 					<Profile />
@@ -86,7 +82,9 @@ export default function Post({
 					{new Date(createdAt).toLocaleDateString('ko-KR')}
 				</p>
 			</div>
-			<div className='mb-6 ml-16 mt-3'>{content}</div>
+			<div className='mb-6 ml-16 mt-3'>
+				<Link href={`/tweets/${id}`}>{content}</Link>
+			</div>
 			<div className='ml-16 flex items-center justify-between'>
 				<div className='flex gap-x-2'>
 					<Button
