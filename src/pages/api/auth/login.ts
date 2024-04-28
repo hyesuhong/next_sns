@@ -50,7 +50,7 @@ async function handler(req: LoginRequest, res: NextApiResponse) {
 	const successRes = {
 		data: { email },
 		status: 200,
-		statusText: 'Created',
+		statusText: 'Success',
 	};
 
 	return res.status(200).json(successRes);
