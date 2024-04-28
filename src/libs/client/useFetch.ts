@@ -1,5 +1,5 @@
 import { CustomApiError } from '@/types/api';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 type UseFetchParams = {
 	headers: { [key: string]: string };
@@ -23,54 +23,65 @@ export default function useFetch<TResponse, TRequest extends BodyInit = string>(
 ) {
 	const [fetchState, setFetchState] = useState<State<TResponse>>(initialState);
 
-	const handler = async (method: HttpMethod, data?: TRequest) => {
-		setFetchState({ isLoading: true });
-		const httpOption = data
-			? { ...options, method, body: data }
-			: { ...options, method };
+	const memorizedUrl = useMemo(() => url, [url]);
+	const memorizedOptions = useMemo(() => options, [options]);
 
-		try {
-			const res = await fetch(url, httpOption);
+	const handler = useCallback(
+		async (method: HttpMethod, data?: TRequest) => {
+			setFetchState({ isLoading: true });
+			const httpOption = data
+				? { ...memorizedOptions, method, body: data }
+				: { ...memorizedOptions, method };
 
-			if (!res.ok || res.status < 200 || res.status >= 300) {
-				const errorData = (await res.json()) as CustomApiError;
+			try {
+				const res = await fetch(memorizedUrl, httpOption);
 
-				throw Error(errorData.message, {
-					cause: { code: errorData.code, message: errorData.message },
-				});
-			}
+				if (!res.ok || res.status < 200 || res.status >= 300) {
+					const errorData = (await res.json()) as CustomApiError;
 
-			const resData = (await res.json()) as TResponse;
-			setFetchState((prev) => ({
-				...prev,
-				error: undefined,
-				response: resData,
-			}));
-		} catch (error) {
-			// console.error(error);
+					throw Error(errorData.message, {
+						cause: { code: errorData.code, message: errorData.message },
+					});
+				}
 
-			if (error instanceof Error) {
-				const cause = error.cause as { code: number; message: string };
+				const resData = (await res.json()) as TResponse;
 				setFetchState((prev) => ({
 					...prev,
-					response: undefined,
-					error: cause,
+					error: undefined,
+					response: resData,
 				}));
-			} else {
-				setFetchState((prev) => ({
-					...prev,
-					response: undefined,
-					error: { message: JSON.stringify(error) },
-				}));
+			} catch (error) {
+				// console.error(error);
+
+				if (error instanceof Error) {
+					const cause = error.cause as { code: number; message: string };
+					setFetchState((prev) => ({
+						...prev,
+						response: undefined,
+						error: cause,
+					}));
+				} else {
+					setFetchState((prev) => ({
+						...prev,
+						response: undefined,
+						error: { message: JSON.stringify(error) },
+					}));
+				}
+			} finally {
+				setFetchState((prev) => ({ ...prev, isLoading: false }));
 			}
-		} finally {
-			setFetchState((prev) => ({ ...prev, isLoading: false }));
-		}
-	};
+		},
+		[memorizedOptions, memorizedUrl]
+	);
 
-	const handleGet = () => handler('GET');
+	const handleGet = useCallback(() => handler('GET'), [handler]);
 
-	const handlePost = (reqData: TRequest) => handler('POST', reqData);
+	const handlePost = useCallback(
+		(reqData?: TRequest) => handler('POST', reqData),
+		[handler]
+	);
 
-	return { fetchState, get: handleGet, post: handlePost };
+	const handleDelete = useCallback(() => handler('DELETE'), [handler]);
+
+	return { fetchState, get: handleGet, post: handlePost, delete: handleDelete };
 }
