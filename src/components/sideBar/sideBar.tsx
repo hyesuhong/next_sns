@@ -7,7 +7,7 @@ export default function SideBar() {
 	const router = useRouter();
 
 	return (
-		<aside className='sticky top-0 h-screen flex-[0_0_18rem] border-r border-r-sns-grey-light px-4 py-6'>
+		<aside className='sticky top-0 h-screen flex-[0_0_18rem] border-r border-r-sns-grey-dark px-4 py-6'>
 			<h1 className='pl-4'>Logo</h1>
 			<ul className='mt-10 flex flex-col gap-y-2'>
 				<NavItem
@@ -16,7 +16,7 @@ export default function SideBar() {
 					label='Home'
 					isActive={router.pathname === '/'}
 				/>
-				<Divider className='my-2' />
+				<Divider className='my-2' lightness='DARK' />
 				<NavItem
 					path='/users/1'
 					icon={<IcoProfile />}
