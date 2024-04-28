@@ -58,9 +58,19 @@ async function handler(req: PostRequest, res: NextApiResponse) {
 					userId: idToNum,
 				},
 				include: {
+					_count: {
+						select: {
+							LikesOnPosts: true,
+						},
+					},
 					user: {
 						select: {
 							name: true,
+						},
+					},
+					LikesOnPosts: {
+						select: {
+							userId: true,
 						},
 					},
 				},

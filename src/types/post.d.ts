@@ -7,4 +7,8 @@ export type PostType = {
 	user: {
 		name: string;
 	};
+	_count: {
+		LikesOnPosts: number;
+	};
+	LikesOnPosts: { userId: number }[];
 };

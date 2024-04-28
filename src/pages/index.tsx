@@ -40,7 +40,11 @@ export default function Page() {
 						{response &&
 							response.data.map((post, index, posts) => (
 								<Fragment key={post.id}>
-									<Post isOwner={user.id === post.userId} {...post} />
+									<Post
+										isOwner={user.id === post.userId}
+										loggedInUserId={user.id}
+										{...post}
+									/>
 									{index !== posts.length - 1 && <Divider lightness='DARK' />}
 								</Fragment>
 							))}

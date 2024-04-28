@@ -5,9 +5,19 @@ import { NextApiRequest, NextApiResponse } from 'next';
 async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const posts = await prisma.post.findMany({
 		include: {
+			_count: {
+				select: {
+					LikesOnPosts: true,
+				},
+			},
 			user: {
 				select: {
 					name: true,
+				},
+			},
+			LikesOnPosts: {
+				select: {
+					userId: true,
 				},
 			},
 		},

@@ -77,9 +77,11 @@ export default function useFetch<TResponse, TRequest extends BodyInit = string>(
 	const handleGet = useCallback(() => handler('GET'), [handler]);
 
 	const handlePost = useCallback(
-		(reqData: TRequest) => handler('POST', reqData),
+		(reqData?: TRequest) => handler('POST', reqData),
 		[handler]
 	);
 
-	return { fetchState, get: handleGet, post: handlePost };
+	const handleDelete = useCallback(() => handler('DELETE'), [handler]);
+
+	return { fetchState, get: handleGet, post: handlePost, delete: handleDelete };
 }

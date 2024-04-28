@@ -45,10 +45,15 @@ export default function Page() {
 				</div>
 			</section>
 			<section className='mx-auto mt-12 flex max-w-4xl flex-col gap-y-8'>
-				{response &&
+				{user &&
+					response &&
 					response.data.map((post, index, posts) => (
 						<Fragment key={post.id}>
-							<Post isOwner={user?.id === post.userId} {...post} />
+							<Post
+								isOwner={user.id === post.userId}
+								loggedInUserId={user.id}
+								{...post}
+							/>
 							{index !== posts.length - 1 && <Divider lightness='DARK' />}
 						</Fragment>
 					))}
