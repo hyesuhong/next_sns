@@ -1,3 +1,4 @@
+import { Method } from '@/types/api';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { getIronSession } from 'iron-session';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -10,7 +11,7 @@ type ApiHandler = (
 ) => void | Promise<void>;
 
 type ConfigType = {
-	method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+	method: Method | Method[];
 	handler: ApiHandler;
 	isPrivate?: boolean;
 };
@@ -34,8 +35,14 @@ export default function withHandler({
 }: ConfigType) {
 	return async function (req: NextApiRequest, res: NextApiResponse) {
 		const session = await getIronSession<SessionData>(req, res, sessionOptions);
+		const reqMethod = req.method as Method | undefined;
+		const isValidMethod =
+			reqMethod &&
+			(typeof method === 'string'
+				? reqMethod === method
+				: method.includes(reqMethod));
 
-		if (req.method !== method) {
+		if (!isValidMethod) {
 			return res.status(405).json(notAllowedMethod);
 		}
 

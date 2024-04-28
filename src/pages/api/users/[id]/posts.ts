@@ -10,6 +10,7 @@ async function handler(req: PostRequest, res: NextApiResponse) {
 	const {
 		body: { content },
 		query: { id },
+		method,
 	} = req;
 
 	const idToNum = Number(id);
@@ -26,28 +27,58 @@ async function handler(req: PostRequest, res: NextApiResponse) {
 		return res.status(404).json({ code: 404, message: 'Not Found' });
 	}
 
-	const post = await prisma.post.create({
-		data: {
-			content,
-			user: {
-				connect: {
-					id: user.id,
+	switch (method) {
+		case 'POST': {
+			const post = await prisma.post.create({
+				data: {
+					content,
+					user: {
+						connect: {
+							id: user.id,
+						},
+					},
 				},
-			},
-		},
-	});
+			});
 
-	if (!post) {
-		return res.status(400).json({ code: 400, message: 'Bad Request' });
+			if (!post) {
+				return res.status(400).json({ code: 400, message: 'Bad Request' });
+			}
+
+			const successRes = {
+				data: { ...post },
+				status: 201,
+				statusText: 'Created new post',
+			};
+
+			return res.status(201).json(successRes);
+		}
+		case 'GET': {
+			const posts = await prisma.post.findMany({
+				where: {
+					userId: idToNum,
+				},
+				include: {
+					user: {
+						select: {
+							name: true,
+						},
+					},
+				},
+			});
+
+			if (!posts) {
+				return res.status(404).json({ code: 404, message: 'Not Found' });
+			}
+
+			const successRes = {
+				data: posts,
+				status: 200,
+				statusText: 'Success',
+			};
+
+			return res.status(200).json(successRes);
+		}
 	}
-
-	const successRes = {
-		data: { ...post },
-		status: 201,
-		statusText: 'Created new post',
-	};
-
-	return res.status(201).json(successRes);
 }
 
-export default withHandler({ method: 'POST', handler });
+export default withHandler({ method: ['POST', 'GET'], handler });

@@ -8,3 +8,14 @@ export interface CustomApiError extends Error {
 	message?: string;
 	code?: string;
 }
+
+export type Method =
+	| 'CONNECT'
+	| 'DELETE'
+	| 'GET'
+	| 'HEAD'
+	| 'OPTIONS'
+	| 'PATCH'
+	| 'POST'
+	| 'PUT'
+	| 'TRACE';
