@@ -8,10 +8,7 @@ export default function Page() {
 			<section className='mx-auto max-w-4xl overflow-hidden rounded border border-sns-grey-dark'>
 				<div className='h-60 bg-sns-grey-dark'>{/* cover image area */}</div>
 				<div className='relative p-4 pt-16'>
-					<Profile
-						className='absolute left-4 top-0 h-28 w-28 -translate-y-2/3 bg-sns-charcoal'
-						imgUrl='https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?size=338&ext=jpg&ga=GA1.1.553209589.1714176000&semt=ais'
-					/>
+					<Profile className='absolute left-4 top-0 h-28 w-28 -translate-y-2/3 bg-sns-charcoal' />
 					<h2 className='mb-2 text-3xl'>Username</h2>
 					<p>user description</p>
 				</div>
