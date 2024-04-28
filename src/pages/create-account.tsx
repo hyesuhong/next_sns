@@ -46,7 +46,7 @@ export default function Page() {
 					<h1 className='mb-24 text-4xl font-bold'>Create account</h1>
 					<form
 						onSubmit={handleSubmit(onSubmit)}
-						className='flex flex-col gap-3'
+						className='flex w-full flex-col gap-3'
 					>
 						<InputField
 							label='Email'
@@ -75,7 +75,7 @@ export default function Page() {
 							{errorMessage && (
 								<span className='text-xs text-sns-red'>{errorMessage}</span>
 							)}
-							<Button disabled={fetchState.isLoading}>
+							<Button disabled={fetchState.isLoading} isFull>
 								{fetchState.isLoading ? 'Loading...' : 'Create account'}
 							</Button>
 						</div>

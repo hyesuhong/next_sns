@@ -1,20 +1,37 @@
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, ReactNode } from 'react';
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+	size?: 'MEDIUM' | 'SMALL';
+	isFull?: boolean;
+	variants?: 'PRIMARY' | 'SECONDARY';
+	icon?: { lead: ReactNode } | { tail: ReactNode };
+}
 
 export default function Button({
 	children,
 	type,
 	disabled,
 	className,
+	size = 'MEDIUM',
+	isFull,
+	variants = 'PRIMARY',
+	icon,
 	...props
-}: ButtonHTMLAttributes<HTMLButtonElement>) {
+}: ButtonProps) {
 	return (
 		<button
 			type={type}
 			disabled={disabled}
-			className={`h-10 w-[260px] rounded bg-sns-lavendar-light text-sns-charcoal transition-colors hover:bg-sns-lavendar-dark hover:text-sns-white disabled:cursor-not-allowed disabled:bg-sns-grey-light disabled:text-sns-white ${className}`}
+			className={`button ${
+				variants === 'PRIMARY'
+					? 'button-variants__primary'
+					: 'button-variants__secondary'
+			} ${size === 'MEDIUM' ? 'button-size__medium' : 'button-size__small'} ${isFull && 'button-isFull'} ${className}`}
 			{...props}
 		>
+			{icon && 'lead' in icon && icon.lead}
 			{children}
+			{icon && 'tail' in icon && icon.tail}
 		</button>
 	);
 }

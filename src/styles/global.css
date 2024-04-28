@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+	.button {
+		@apply flex items-center justify-center gap-x-1 rounded transition-colors disabled:cursor-not-allowed disabled:bg-sns-grey-light disabled:text-sns-grey-dark [&>svg]:h-5 [&>svg]:w-5;
+	}
+
+	.button-size__medium {
+		@apply h-10 px-8 text-sm;
+	}
+
+	.button-size__small {
+		@apply h-8 px-4 text-xs;
+	}
+
+	.button-isFull {
+		@apply w-full;
+	}
+
+	.button-variants__primary:not(:disabled) {
+		@apply bg-sns-lavendar-light text-sns-white hover:bg-sns-lavendar-dark;
+	}
+
+	.button-variants__secondary:not(:disabled) {
+		@apply border border-sns-grey-light hover:bg-sns-white/10;
+	}
+}
