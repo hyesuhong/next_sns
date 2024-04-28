@@ -1,20 +1,33 @@
+import { PostType } from '@/types/post';
+import Link from 'next/link';
 import { Button, Profile } from '../common';
 import { IcoChat, IcoEdit, IcoHeart, IcoTrash } from '../icons';
 
-type PostProps = {
+interface PostProps extends PostType {
 	isOwner?: boolean;
-};
+}
 
-export default function Post({ isOwner }: PostProps) {
+export default function Post({
+	id,
+	userId,
+	content,
+	createdAt,
+	user,
+	isOwner,
+}: PostProps) {
 	return (
-		<article className='p-4'>
+		<article className='p-4' data-post-id={id}>
 			<div className='flex items-center gap-x-2'>
-				<Profile />
-				<h4 className='ml-2 text-xl'>Username</h4>
+				<Link href={`/users/${userId}`} className='flex items-center gap-x-4'>
+					<Profile />
+					<h4 className='text-xl'>{user.name}</h4>
+				</Link>
 				<span className='h-1 w-1 rounded-full bg-sns-grey-dark' />
-				<p className='text-xs text-sns-grey-light'>2024.00.00</p>
+				<p className='text-xs text-sns-grey-light'>
+					{new Date(createdAt).toLocaleDateString('ko-KR')}
+				</p>
 			</div>
-			<div className='mb-6 ml-16 mt-3'>post main</div>
+			<div className='mb-6 ml-16 mt-3'>{content}</div>
 			<div className='ml-16 flex items-center justify-between'>
 				<div className='flex gap-x-2'>
 					<Button
