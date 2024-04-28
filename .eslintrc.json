@@ -15,5 +15,13 @@
 	"parserOptions": {
 		"project": "./tsconfig.json",
 		"createDefaultProgram": true
+	},
+	"rules": {
+		"@typescript-eslint/no-misused-promises": [
+			"error",
+			{
+				"checksVoidReturn": false
+			}
+		]
 	}
 }
