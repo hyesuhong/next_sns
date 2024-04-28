@@ -4,15 +4,19 @@
 
 @layer components {
 	.button {
-		@apply flex items-center justify-center gap-x-1 rounded transition-colors disabled:cursor-not-allowed disabled:bg-sns-grey-light disabled:text-sns-grey-dark [&>svg]:h-5 [&>svg]:w-5;
+		@apply flex items-center justify-center gap-x-1 rounded transition-colors disabled:cursor-not-allowed disabled:bg-sns-grey-light disabled:text-sns-grey-dark;
 	}
 
 	.button-size__medium {
-		@apply h-10 px-8 text-sm;
+		@apply h-10 px-8 text-sm [&>svg]:h-5 [&>svg]:w-5;
 	}
 
 	.button-size__small {
-		@apply h-8 px-4 text-xs;
+		@apply h-8 px-4 text-xs [&>svg]:h-4 [&>svg]:w-4;
+	}
+
+	.button-size__xsmall {
+		@apply h-8 px-2 text-xs [&>svg]:h-4 [&>svg]:w-4;
 	}
 
 	.button-isFull {
@@ -25,5 +29,9 @@
 
 	.button-variants__secondary:not(:disabled) {
 		@apply border border-sns-grey-light hover:bg-sns-white/10;
+	}
+
+	.button-variants__tertiary:not(:disabled) {
+		@apply text-sns-grey-light hover:bg-sns-white/10 hover:text-sns-white;
 	}
 }

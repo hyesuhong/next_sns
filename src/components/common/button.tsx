@@ -1,9 +1,9 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-	size?: 'MEDIUM' | 'SMALL';
+	size?: 'MEDIUM' | 'SMALL' | 'X_SMALL';
 	isFull?: boolean;
-	variants?: 'PRIMARY' | 'SECONDARY';
+	variants?: 'PRIMARY' | 'SECONDARY' | 'TERTIARY';
 	icon?: { lead: ReactNode } | { tail: ReactNode };
 }
 
@@ -25,8 +25,10 @@ export default function Button({
 			className={`button ${
 				variants === 'PRIMARY'
 					? 'button-variants__primary'
-					: 'button-variants__secondary'
-			} ${size === 'MEDIUM' ? 'button-size__medium' : 'button-size__small'} ${isFull && 'button-isFull'} ${className}`}
+					: variants === 'SECONDARY'
+						? 'button-variants__secondary'
+						: 'button-variants__tertiary'
+			} ${size === 'MEDIUM' ? 'button-size__medium' : size === 'SMALL' ? 'button-size__small' : 'button-size__xsmall'} ${isFull && 'button-isFull'} ${className}`}
 			{...props}
 		>
 			{icon && 'lead' in icon && icon.lead}
