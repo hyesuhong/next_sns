@@ -27,7 +27,7 @@ export default function Page() {
 		if (user) {
 			get().catch(console.error);
 		}
-	}, [user]);
+	}, [user, get]);
 
 	return (
 		<GeneralLayout>

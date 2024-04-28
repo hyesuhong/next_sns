@@ -12,22 +12,19 @@ type PostInput = {
 };
 
 export default function FeedForm({ userId }: FeedFormProps) {
-	console.log(userId);
 	const {
 		register,
 		handleSubmit,
 		reset,
 		formState: { isValid },
 	} = useForm<PostInput>();
-	const { fetchState, post } = useFetch(`/api/users/${userId}/posts`, {
+	const { post } = useFetch(`/api/users/${userId}/posts`, {
 		headers: {
 			'Content-Type': 'application/json',
 		},
 	});
 
 	const onSubmit: SubmitHandler<PostInput> = async (data) => {
-		console.log(data);
-
 		await post(JSON.stringify(data));
 
 		reset();

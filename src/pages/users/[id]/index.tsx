@@ -16,10 +16,11 @@ export default function Page() {
 	const {
 		query: { id },
 	} = useRouter();
+	const userId = id as string;
 	const {
 		fetchState: { response },
 		get,
-	} = useFetch<ResponseData>(`/api/users/${id}/posts`, {
+	} = useFetch<ResponseData>(`/api/users/${userId}/posts`, {
 		headers: {
 			'Content-Type': 'application/json',
 		},
@@ -29,7 +30,7 @@ export default function Page() {
 		if (id) {
 			get().catch(console.error);
 		}
-	}, [id]);
+	}, [id, get]);
 	return (
 		<GeneralLayout>
 			<section className='mx-auto max-w-4xl overflow-hidden rounded border border-sns-grey-dark'>
