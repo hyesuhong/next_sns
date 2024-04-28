@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import { SessionData } from '../server/session';
 
-type userSessionData = SessionData['user'];
+type userSessionData = { data: SessionData['user'] };
 type userSessionError = { code: number; message: string };
 
 const fetcher = (url: string) =>
@@ -12,5 +12,5 @@ export default function useAuthSession() {
 		'/api/auth/me',
 		fetcher
 	);
-	return { user: data, error, isLoading: !data && !error };
+	return { user: data?.data, error, isLoading: !data && !error };
 }
