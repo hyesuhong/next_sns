@@ -6,6 +6,10 @@ import NavItem from './navItem';
 export default function SideBar() {
 	const router = useRouter();
 
+	const onLogoutClick = () => {
+		console.log('logout');
+	};
+
 	return (
 		<aside className='sticky top-0 h-screen flex-[0_0_18rem] border-r border-r-sns-grey-dark px-4 py-6'>
 			<h1 className='pl-4'>Logo</h1>
@@ -23,7 +27,13 @@ export default function SideBar() {
 					label='My Profile'
 					isActive={router.pathname === '/users/[id]'}
 				/>
-				<NavItem path='' icon={<IcoLogOut />} label='Log out' />
+				<NavItem
+					path=''
+					icon={<IcoLogOut />}
+					label='Log out'
+					asButton
+					onClick={onLogoutClick}
+				/>
 			</ul>
 		</aside>
 	);
