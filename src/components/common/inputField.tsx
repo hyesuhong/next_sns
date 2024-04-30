@@ -23,7 +23,7 @@ export default function InputField<T extends FieldValues>({
 	options,
 }: InputProps<T>) {
 	return (
-		<div className='relative pb-4'>
+		<div className='relative'>
 			<input
 				type={type}
 				className='h-10 w-full rounded-[4px] border border-sns-white bg-transparent px-4 text-sm outline-none focus:border-sns-lavendar-dark'
@@ -34,11 +34,7 @@ export default function InputField<T extends FieldValues>({
 					{label}
 				</label>
 			)}
-			{errorMessege && (
-				<span className='absolute bottom-0 left-0 text-xs text-sns-red'>
-					{errorMessege}
-				</span>
-			)}
+			{errorMessege && <p className='text-xs text-sns-red'>{errorMessege}</p>}
 		</div>
 	);
 }

@@ -1,8 +1,10 @@
-export type Join = {
+type BaseAuth = {
 	email: string;
-	name: string;
+	password: string;
 };
 
-export type Login = {
-	email: string;
-};
+export type Join = {
+	name: string;
+} & BaseAuth;
+
+export type Login = BaseAuth;
