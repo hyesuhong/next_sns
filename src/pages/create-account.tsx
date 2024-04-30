@@ -23,8 +23,6 @@ export default function Page() {
 	});
 
 	const onSubmit: SubmitHandler<Join> = async (data) => {
-		console.log(data);
-
 		await post(JSON.stringify(data));
 	};
 
@@ -70,6 +68,20 @@ export default function Page() {
 								required: 'Name is required',
 							}}
 							errorMessege={errors.name?.message}
+						/>
+						<InputField
+							label='Password'
+							name='password'
+							type='password'
+							register={register}
+							options={{
+								required: 'Password id required.',
+								minLength: {
+									value: 8,
+									message: 'Password has to be at least 8 characters.',
+								},
+							}}
+							errorMessege={errors.password?.message}
 						/>
 						<div className='mt-4 text-center'>
 							{errorMessage && (

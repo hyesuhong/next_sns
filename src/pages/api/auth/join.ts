@@ -1,6 +1,7 @@
 import client from '@/libs/server/client';
 import withHandler from '@/libs/server/withHandler';
 import { Join } from '@/types/auth';
+import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 interface JoinRequest extends NextApiRequest {
@@ -8,12 +9,18 @@ interface JoinRequest extends NextApiRequest {
 }
 
 async function handler(req: JoinRequest, res: NextApiResponse) {
-	const { name, email } = req.body;
+	const { name, email, password } = req.body;
+
+	const hashed = await bcrypt.hash(
+		password,
+		Number(process.env.BCRYPT_SALT_ROUNDS!)
+	);
 
 	await client.user.create({
 		data: {
 			name,
 			email,
+			password: hashed,
 		},
 	});
 

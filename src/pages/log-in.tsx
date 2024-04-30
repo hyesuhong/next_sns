@@ -23,8 +23,6 @@ export default function Page() {
 	});
 
 	const onSubmit: SubmitHandler<Login> = async (data) => {
-		console.log(data);
-
 		await post(JSON.stringify(data));
 	};
 
@@ -61,6 +59,16 @@ export default function Page() {
 								},
 							}}
 							errorMessege={errors.email?.message}
+						/>
+						<InputField
+							label='Password'
+							name='password'
+							type='password'
+							register={register}
+							options={{
+								required: 'Password id required.',
+							}}
+							errorMessege={errors.password?.message}
 						/>
 						<div className='mt-4 text-center'>
 							{errorMessage && (

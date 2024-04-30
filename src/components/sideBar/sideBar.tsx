@@ -1,13 +1,24 @@
+import useFetch from '@/libs/client/useFetch';
 import { useRouter } from 'next/router';
 import Divider from '../common/divider';
 import { IcoHome, IcoLogOut, IcoProfile } from '../icons';
 import NavItem from './navItem';
 
+const URL = '/api/auth/logout';
+
 export default function SideBar() {
 	const router = useRouter();
+	const { post } = useFetch(URL, {
+		headers: { 'Content-type': 'application/json' },
+	});
 
-	const onLogoutClick = () => {
-		console.log('logout');
+	const onLogoutClick = async () => {
+		try {
+			await post();
+			await router.push('/log-in');
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (

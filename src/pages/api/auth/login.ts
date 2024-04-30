@@ -2,6 +2,7 @@ import client from '@/libs/server/client';
 import { SessionData, sessionOptions } from '@/libs/server/session';
 import withHandler from '@/libs/server/withHandler';
 import { Login } from '@/types/auth';
+import bcrypt from 'bcrypt';
 import { getIronSession } from 'iron-session';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -10,8 +11,7 @@ interface LoginRequest extends NextApiRequest {
 }
 
 async function handler(req: LoginRequest, res: NextApiResponse) {
-	const { email } = req.body;
-	console.log(email);
+	const { email, password } = req.body;
 
 	const session = await getIronSession<SessionData>(req, res, sessionOptions);
 
@@ -20,7 +20,17 @@ async function handler(req: LoginRequest, res: NextApiResponse) {
 	});
 
 	if (!user) {
-		return res.status(404).json({ code: 404, message: 'Not Found' });
+		return res
+			.status(401)
+			.json({ code: 401, message: 'Invalid email or password' });
+	}
+
+	const isValidUser = await bcrypt.compare(password, user.password);
+
+	if (!isValidUser) {
+		return res
+			.status(401)
+			.json({ code: 401, message: 'Invalid email or password' });
 	}
 
 	const payload = Math.floor(100000 + Math.random() * 900000) + '';
