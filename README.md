@@ -29,9 +29,9 @@
 ### To Do
 
 - [ ] connect to database server
-- [ ] auth
-  - [ ] add password field
-  - [ ] logout
+- [x] auth ⇒ [PR#7](https://github.com/hyesuhong/next_sns/pull/7)
+  - [x] add password field
+  - [x] logout
 - [ ] post
   - [ ] update
   - [ ] delete
