@@ -28,7 +28,7 @@
 
 ### To Do
 
-- [ ] connect to database server
+- [x] connect to database server ⇒ [PR#8](https://github.com/hyesuhong/next_sns/pull/8)
 - [x] auth ⇒ [PR#7](https://github.com/hyesuhong/next_sns/pull/7)
   - [x] add password field
   - [x] logout
