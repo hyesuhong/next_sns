@@ -18,3 +18,24 @@
 | **/create-account** | sign up page                                                                                               |
 | **/log-in**         | sign in page                                                                                               |
 | **/tweet/[id]**     | - display detail of specific tweet<br/>- a tweet has like button                                           |
+
+## Next Steps
+
+### To Fix
+
+- [ ] fix like mutation bug
+- [ ] sidebar's profile link
+
+### To Do
+
+- [x] connect to database server ⇒ [PR#8](https://github.com/hyesuhong/next_sns/pull/8)
+- [x] auth ⇒ [PR#7](https://github.com/hyesuhong/next_sns/pull/7)
+  - [x] add password field
+  - [x] logout
+- [ ] post
+  - [ ] update
+  - [ ] delete
+  - [ ] comment
+- [ ] user
+  - [ ] read user profile
+  - [ ] profile update

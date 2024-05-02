@@ -1,3 +1,4 @@
+import { apiRoutes } from '@/constants/routes';
 import useSWR from 'swr';
 import { SessionData } from '../server/session';
 
@@ -9,7 +10,7 @@ const fetcher = (url: string) =>
 
 export default function useAuthSession() {
 	const { data, error } = useSWR<userSessionData, userSessionError>(
-		'/api/auth/me',
+		apiRoutes.ME,
 		fetcher
 	);
 	return { user: data?.data, error, isLoading: !data && !error };

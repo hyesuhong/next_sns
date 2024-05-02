@@ -1,9 +1,6 @@
-import { CustomApiError } from '@/types/api';
+import { AllowedMethods, CustomApiError } from '@/types/api';
+import { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import { useCallback, useMemo, useState } from 'react';
-
-type UseFetchParams = {
-	headers: { [key: string]: string };
-};
 
 type State<TResponse> = {
 	response?: TResponse;
@@ -11,23 +8,39 @@ type State<TResponse> = {
 	error?: { code?: number; message?: string };
 };
 
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
-
 const initialState = {
 	isLoading: false,
 };
 
 export default function useFetch<TResponse, TRequest extends BodyInit = string>(
 	url: string | URL | Request,
-	options?: UseFetchParams
+	options?: RequestInit
 ) {
 	const [fetchState, setFetchState] = useState<State<TResponse>>(initialState);
 
 	const memorizedUrl = useMemo(() => url, [url]);
-	const memorizedOptions = useMemo(() => options, [options]);
+	const memorizedOptions = useMemo(() => {
+		if (!options) {
+			return {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			};
+		}
+
+		const { headers, ...otherOptions } = options;
+		const newOptions = {
+			...otherOptions,
+			headers: {
+				...headers,
+				'Content-Type': 'application/json',
+			},
+		};
+		return newOptions;
+	}, [options]);
 
 	const handler = useCallback(
-		async (method: HttpMethod, data?: TRequest) => {
+		async (method: AllowedMethods, data?: TRequest) => {
 			setFetchState({ isLoading: true });
 			const httpOption = data
 				? { ...memorizedOptions, method, body: data }

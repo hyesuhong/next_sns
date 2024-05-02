@@ -1,6 +1,7 @@
 import { Divider, Profile } from '@/components/common';
 import { GeneralLayout } from '@/components/layouts';
 import { Post } from '@/components/post';
+import { apiRoutes } from '@/constants/routes';
 import useAuthSession from '@/libs/client/useAuthSession';
 import useFetch from '@/libs/client/useFetch';
 import { PostType } from '@/types/post';
@@ -20,11 +21,9 @@ export default function Page() {
 	const {
 		fetchState: { response },
 		get,
-	} = useFetch<ResponseData>(`/api/users/${userId}/posts`, {
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	});
+	} = useFetch<ResponseData>(
+		apiRoutes.A_USERS_ALL_POSTS.generator(Number(userId))
+	);
 	const [isInitialRender, setIsInitialRender] = useState(true);
 
 	useEffect(() => {
@@ -34,8 +33,8 @@ export default function Page() {
 		}
 	}, [id, get, isInitialRender]);
 
-	return (
-		<GeneralLayout>
+	return user ? (
+		<GeneralLayout user={user}>
 			<section className='mx-auto max-w-4xl overflow-hidden rounded border border-sns-grey-dark'>
 				<div className='h-60 bg-sns-grey-dark'>{/* cover image area */}</div>
 				<div className='relative p-4 pt-16'>
@@ -45,8 +44,7 @@ export default function Page() {
 				</div>
 			</section>
 			<section className='mx-auto mt-12 flex max-w-4xl flex-col gap-y-8'>
-				{user &&
-					response &&
+				{response &&
 					response.data.map((post, index, posts) => (
 						<Fragment key={post.id}>
 							<Post
@@ -59,5 +57,5 @@ export default function Page() {
 					))}
 			</section>
 		</GeneralLayout>
-	);
+	) : null;
 }

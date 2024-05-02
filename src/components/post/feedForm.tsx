@@ -1,3 +1,4 @@
+import { apiRoutes } from '@/constants/routes';
 import useFetch from '@/libs/client/useFetch';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from '../common';
@@ -18,11 +19,7 @@ export default function FeedForm({ userId }: FeedFormProps) {
 		reset,
 		formState: { isValid },
 	} = useForm<PostInput>();
-	const { post } = useFetch(`/api/users/${userId}/posts`, {
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	});
+	const { post } = useFetch(apiRoutes.A_USERS_ALL_POSTS.generator(userId));
 
 	const onSubmit: SubmitHandler<PostInput> = async (data) => {
 		await post(JSON.stringify(data));

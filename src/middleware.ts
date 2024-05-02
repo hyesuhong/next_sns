@@ -16,9 +16,7 @@ export async function middleware(req: NextRequest) {
 		if (authSession && authSession.isLoggedIn) {
 			return NextResponse.redirect(new URL('/', req.url));
 		}
-	}
-
-	if (req.nextUrl.pathname === '/') {
+	} else {
 		if (!authSession || !authSession.isLoggedIn) {
 			return NextResponse.redirect(new URL('/create-account', req.url));
 		}

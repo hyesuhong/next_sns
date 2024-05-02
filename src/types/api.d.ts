@@ -19,3 +19,5 @@ export type Method =
 	| 'POST'
 	| 'PUT'
 	| 'TRACE';
+
+export type AllowedMethods = Extract<Method, 'GET' | 'POST' | 'PUT' | 'DELETE'>;

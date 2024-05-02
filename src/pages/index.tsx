@@ -1,6 +1,7 @@
 import { Divider } from '@/components/common';
 import { GeneralLayout } from '@/components/layouts';
 import { FeedForm, Post } from '@/components/post';
+import { apiRoutes } from '@/constants/routes';
 import useAuthSession from '@/libs/client/useAuthSession';
 import useFetch from '@/libs/client/useFetch';
 import { PostType } from '@/types/post';
@@ -10,18 +11,12 @@ type ResponseData = {
 	data: PostType[];
 };
 
-const URL = '/api/posts';
-
 export default function Page() {
 	const { user } = useAuthSession();
 	const {
 		fetchState: { response },
 		get,
-	} = useFetch<ResponseData>(URL, {
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	});
+	} = useFetch<ResponseData>(apiRoutes.ALL_POSTS);
 	const [isInitialRender, setIsInitialRender] = useState(true);
 
 	useEffect(() => {
@@ -31,8 +26,8 @@ export default function Page() {
 		}
 	}, [user, get, isInitialRender]);
 
-	return (
-		<GeneralLayout>
+	return user ? (
+		<GeneralLayout user={user}>
 			{user && (
 				<>
 					<FeedForm userId={user.id} />
@@ -52,5 +47,5 @@ export default function Page() {
 				</>
 			)}
 		</GeneralLayout>
-	);
+	) : null;
 }
