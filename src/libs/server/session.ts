@@ -1,13 +1,10 @@
+import { User } from '@/types/auth';
 import { SessionOptions, getIronSession } from 'iron-session';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export type SessionData = {
 	isLoggedIn: boolean;
-	user?: {
-		id: number;
-		name: string;
-		email: string;
-	};
+	user?: User;
 };
 
 export const sessionOptions: SessionOptions = {

@@ -1,21 +1,24 @@
+import { apiRoutes, pageRoutes } from '@/constants/routes';
 import useFetch from '@/libs/client/useFetch';
+import { User } from '@/types/auth';
 import { useRouter } from 'next/router';
 import Divider from '../common/divider';
 import { IcoHome, IcoLogOut, IcoProfile } from '../icons';
 import NavItem from './navItem';
 
-const URL = '/api/auth/logout';
+interface SideBarProps {
+	user: User;
+}
 
-export default function SideBar() {
+export default function SideBar({ user }: SideBarProps) {
 	const router = useRouter();
-	const { post } = useFetch(URL, {
-		headers: { 'Content-type': 'application/json' },
-	});
+	const { post } = useFetch(apiRoutes.LOGOUT);
+	const userProfilePath = pageRoutes.USER_PROFILE.generator(user.id);
 
 	const onLogoutClick = async () => {
 		try {
 			await post();
-			await router.push('/log-in');
+			await router.push(pageRoutes.LOGIN.path);
 		} catch (error) {
 			console.error(error);
 		}
@@ -26,17 +29,17 @@ export default function SideBar() {
 			<h1 className='pl-4'>Logo</h1>
 			<ul className='mt-10 flex flex-col gap-y-2'>
 				<NavItem
-					path='/'
+					path={pageRoutes.MAIN.path}
 					icon={<IcoHome />}
-					label='Home'
-					isActive={router.pathname === '/'}
+					label={pageRoutes.MAIN.name}
+					isActive={router.pathname === pageRoutes.MAIN.path}
 				/>
 				<Divider className='my-2' lightness='DARK' />
 				<NavItem
-					path='/users/1'
+					path={userProfilePath}
 					icon={<IcoProfile />}
 					label='My Profile'
-					isActive={router.pathname === '/users/[id]'}
+					isActive={router.pathname === userProfilePath}
 				/>
 				<NavItem
 					path=''
