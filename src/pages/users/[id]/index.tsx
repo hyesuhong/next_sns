@@ -34,8 +34,8 @@ export default function Page() {
 		}
 	}, [id, get, isInitialRender]);
 
-	return (
-		<GeneralLayout>
+	return user ? (
+		<GeneralLayout user={user}>
 			<section className='mx-auto max-w-4xl overflow-hidden rounded border border-sns-grey-dark'>
 				<div className='h-60 bg-sns-grey-dark'>{/* cover image area */}</div>
 				<div className='relative p-4 pt-16'>
@@ -45,8 +45,7 @@ export default function Page() {
 				</div>
 			</section>
 			<section className='mx-auto mt-12 flex max-w-4xl flex-col gap-y-8'>
-				{user &&
-					response &&
+				{response &&
 					response.data.map((post, index, posts) => (
 						<Fragment key={post.id}>
 							<Post
@@ -59,5 +58,5 @@ export default function Page() {
 					))}
 			</section>
 		</GeneralLayout>
-	);
+	) : null;
 }

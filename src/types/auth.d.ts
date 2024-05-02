@@ -8,3 +8,9 @@ export type Join = {
 } & BaseAuth;
 
 export type Login = BaseAuth;
+
+export type User = {
+	id: number;
+	name: string;
+	email: string;
+};

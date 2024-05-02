@@ -15,9 +15,9 @@ export default function Page() {
 	const { user } = useAuthSession();
 	const { data } = useSWR<{ data: PostType }>(`/api/posts/${postId}`, fetcher);
 
-	return (
-		<GeneralLayout>
-			{user && data && (
+	return user ? (
+		<GeneralLayout user={user}>
+			{data && (
 				<Post
 					isOwner={user.id === data.data.userId}
 					loggedInUserId={user.id}
@@ -25,5 +25,5 @@ export default function Page() {
 				/>
 			)}
 		</GeneralLayout>
-	);
+	) : null;
 }

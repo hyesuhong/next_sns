@@ -1,12 +1,17 @@
 import useFetch from '@/libs/client/useFetch';
+import { User } from '@/types/auth';
 import { useRouter } from 'next/router';
 import Divider from '../common/divider';
 import { IcoHome, IcoLogOut, IcoProfile } from '../icons';
 import NavItem from './navItem';
 
+interface SideBarProps {
+	user: User;
+}
+
 const URL = '/api/auth/logout';
 
-export default function SideBar() {
+export default function SideBar({ user }: SideBarProps) {
 	const router = useRouter();
 	const { post } = useFetch(URL, {
 		headers: { 'Content-type': 'application/json' },
@@ -33,7 +38,7 @@ export default function SideBar() {
 				/>
 				<Divider className='my-2' lightness='DARK' />
 				<NavItem
-					path='/users/1'
+					path={`/users/${user.id}`}
 					icon={<IcoProfile />}
 					label='My Profile'
 					isActive={router.pathname === '/users/[id]'}

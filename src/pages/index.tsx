@@ -31,8 +31,8 @@ export default function Page() {
 		}
 	}, [user, get, isInitialRender]);
 
-	return (
-		<GeneralLayout>
+	return user ? (
+		<GeneralLayout user={user}>
 			{user && (
 				<>
 					<FeedForm userId={user.id} />
@@ -52,5 +52,5 @@ export default function Page() {
 				</>
 			)}
 		</GeneralLayout>
-	);
+	) : null;
 }
