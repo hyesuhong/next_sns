@@ -1,12 +1,11 @@
 import { Button, CustomLink, Divider, InputField } from '@/components/common';
+import { EMAIL_REGEXP } from '@/constants/regExp';
 import { apiRoutes, pageRoutes } from '@/constants/routes';
 import useFetch from '@/libs/client/useFetch';
 import { Login } from '@/types/auth';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
-const emailRegexp = /^\S+@\S+\.\S+$/;
 
 export default function Page() {
 	const router = useRouter();
@@ -49,7 +48,7 @@ export default function Page() {
 							options={{
 								required: 'Email is required.',
 								pattern: {
-									value: emailRegexp,
+									value: EMAIL_REGEXP,
 									message:
 										'Please write down correct email format(ex. example@mail.com)',
 								},
