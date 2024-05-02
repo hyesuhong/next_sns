@@ -1,6 +1,7 @@
 import { Divider, Profile } from '@/components/common';
 import { GeneralLayout } from '@/components/layouts';
 import { Post } from '@/components/post';
+import { apiRoutes } from '@/constants/routes';
 import useAuthSession from '@/libs/client/useAuthSession';
 import useFetch from '@/libs/client/useFetch';
 import { PostType } from '@/types/post';
@@ -20,11 +21,9 @@ export default function Page() {
 	const {
 		fetchState: { response },
 		get,
-	} = useFetch<ResponseData>(`/api/users/${userId}/posts`, {
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	});
+	} = useFetch<ResponseData>(
+		apiRoutes.A_USERS_ALL_POSTS.generator(Number(userId))
+	);
 	const [isInitialRender, setIsInitialRender] = useState(true);
 
 	useEffect(() => {

@@ -1,3 +1,4 @@
+import { apiRoutes } from '@/constants/routes';
 import useFetch from '@/libs/client/useFetch';
 import { PostType } from '@/types/post';
 import Link from 'next/link';
@@ -24,7 +25,7 @@ export default function Post({
 	loggedInUserId,
 }: PostProps) {
 	const { data, mutate } = useSWR<{ data: PostType }>(
-		`/api/posts/${id}`,
+		apiRoutes.A_POST_BY_ID.generator(id),
 		fetcher
 	);
 	const likesUsers = data ? data.data.LikesOnPosts : LikesOnPosts;
@@ -32,11 +33,9 @@ export default function Post({
 	const ownerLiked = likesUsers.findIndex(
 		(post) => post.userId === loggedInUserId
 	);
-	const { post, delete: likeDelete } = useFetch(`/api/posts/${id}/like`, {
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	});
+	const { post, delete: likeDelete } = useFetch(
+		apiRoutes.A_POST_BY_ID_LIKE.generator(id)
+	);
 
 	const onLikeClick = () => {
 		if (ownerLiked > -1) {

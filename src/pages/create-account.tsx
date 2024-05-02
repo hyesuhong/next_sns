@@ -1,11 +1,11 @@
 import { Button, CustomLink, Divider, InputField } from '@/components/common';
+import { apiRoutes, pageRoutes } from '@/constants/routes';
 import useFetch from '@/libs/client/useFetch';
 import { Join } from '@/types/auth';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-const URL = '/api/auth/join';
 const emailRegexp = /^\S+@\S+\.\S+$/;
 
 export default function Page() {
@@ -16,11 +16,7 @@ export default function Page() {
 		formState: { errors },
 		handleSubmit,
 	} = useForm<Join>();
-	const { fetchState, post } = useFetch(URL, {
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	});
+	const { fetchState, post } = useFetch(apiRoutes.JOIN);
 
 	const onSubmit: SubmitHandler<Join> = async (data) => {
 		await post(JSON.stringify(data));
@@ -32,7 +28,7 @@ export default function Page() {
 				setErrorMessage(fetchState.error.message);
 			}
 			if (fetchState.response) {
-				router.push('/log-in').catch(console.error);
+				router.push(pageRoutes.LOGIN.path).catch(console.error);
 			}
 		}
 	}, [fetchState, router]);

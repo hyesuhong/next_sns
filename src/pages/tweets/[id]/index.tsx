@@ -1,5 +1,6 @@
 import { GeneralLayout } from '@/components/layouts';
 import { Post } from '@/components/post';
+import { apiRoutes } from '@/constants/routes';
 import useAuthSession from '@/libs/client/useAuthSession';
 import { PostType } from '@/types/post';
 import { useRouter } from 'next/router';
@@ -13,7 +14,10 @@ export default function Page() {
 	} = useRouter();
 	const postId = id as string;
 	const { user } = useAuthSession();
-	const { data } = useSWR<{ data: PostType }>(`/api/posts/${postId}`, fetcher);
+	const { data } = useSWR<{ data: PostType }>(
+		apiRoutes.A_POST_BY_ID.generator(Number(postId)),
+		fetcher
+	);
 
 	return user ? (
 		<GeneralLayout user={user}>
