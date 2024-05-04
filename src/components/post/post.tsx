@@ -82,7 +82,7 @@ export default function Post({
 				</p>
 			</div>
 			<div className='mb-6 ml-16 mt-3'>
-				<Link href={`/tweets/${id}`}>{content}</Link>
+				<Link href={`/posts/${id}`}>{content}</Link>
 			</div>
 			<div className='ml-16 flex items-center justify-between'>
 				<div className='flex gap-x-2'>

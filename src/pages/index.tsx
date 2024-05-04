@@ -1,18 +1,19 @@
-import { Divider } from '@/components/common';
-import { GeneralLayout } from '@/components/layouts';
+import { Divider, Loading } from '@/components/common';
 import { FeedForm, Post } from '@/components/post';
 import { apiRoutes } from '@/constants/routes';
+import BasicContainer from '@/containers/basicContainer';
 import useAuthSession from '@/libs/client/useAuthSession';
 import useFetch from '@/libs/client/useFetch';
 import { PostType } from '@/types/post';
-import { Fragment, useEffect, useState } from 'react';
+import Error from 'next/error';
+import { Fragment, Suspense, useEffect, useState } from 'react';
 
 type ResponseData = {
 	data: PostType[];
 };
 
 export default function Page() {
-	const { user } = useAuthSession();
+	const { user, isLoading, error } = useAuthSession();
 	const {
 		fetchState: { response },
 		get,
@@ -26,11 +27,13 @@ export default function Page() {
 		}
 	}, [user, get, isInitialRender]);
 
-	return user ? (
-		<GeneralLayout user={user}>
+	return error ? (
+		<Error statusCode={error.code} />
+	) : (
+		<Suspense fallback={<Loading />}>
 			{user && (
-				<>
-					<FeedForm userId={user.id} />
+				<BasicContainer user={user}>
+					<FeedForm userId={user!.id} />
 					<section className='mx-auto mt-12 flex max-w-4xl flex-col gap-y-8'>
 						{response &&
 							response.data.map((post, index, posts) => (
@@ -44,8 +47,8 @@ export default function Page() {
 								</Fragment>
 							))}
 					</section>
-				</>
+				</BasicContainer>
 			)}
-		</GeneralLayout>
-	) : null;
+		</Suspense>
+	);
 }
