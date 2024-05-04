@@ -39,7 +39,7 @@ export default function SideBar({ user }: SideBarProps) {
 					path={userProfilePath}
 					icon={<IcoProfile />}
 					label='My Profile'
-					isActive={router.pathname === userProfilePath}
+					isActive={router.asPath === userProfilePath}
 				/>
 				<NavItem
 					path=''
