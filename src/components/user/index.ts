@@ -1,3 +1,4 @@
+import Profile from './profile';
 import ProfileImage from './profileImage';
 
-export { ProfileImage };
+export { Profile, ProfileImage };
