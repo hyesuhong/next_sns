@@ -1,5 +1,6 @@
-import { Divider, Loading, Profile } from '@/components/common';
+import { Divider, Loading } from '@/components/common';
 import { Post } from '@/components/post';
+import { ProfileImage } from '@/components/user';
 import { apiRoutes } from '@/constants/routes';
 import BasicContainer from '@/containers/basicContainer';
 import useAuthSession from '@/libs/client/useAuthSession';
@@ -43,7 +44,7 @@ export default function Page() {
 							{/* cover image area */}
 						</div>
 						<div className='relative p-4 pt-16'>
-							<Profile className='absolute left-4 top-0 h-28 w-28 -translate-y-2/3 bg-sns-charcoal' />
+							<ProfileImage className='absolute left-4 top-0 h-28 w-28 -translate-y-2/3 bg-sns-charcoal' />
 							<h2 className='mb-2 text-3xl'>Username</h2>
 							<p>user description</p>
 						</div>

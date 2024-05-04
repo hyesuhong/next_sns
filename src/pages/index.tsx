@@ -13,7 +13,7 @@ type ResponseData = {
 };
 
 export default function Page() {
-	const { user, isLoading, error } = useAuthSession();
+	const { user, error } = useAuthSession();
 	const {
 		fetchState: { response },
 		get,
@@ -33,7 +33,7 @@ export default function Page() {
 		<Suspense fallback={<Loading />}>
 			{user && (
 				<BasicContainer user={user}>
-					<FeedForm userId={user!.id} />
+					<FeedForm userId={user.id} />
 					<section className='mx-auto mt-12 flex max-w-4xl flex-col gap-y-8'>
 						{response &&
 							response.data.map((post, index, posts) => (

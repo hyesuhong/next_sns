@@ -3,8 +3,9 @@ import useFetch from '@/libs/client/useFetch';
 import { PostType } from '@/types/post';
 import Link from 'next/link';
 import useSWR from 'swr';
-import { Button, Profile } from '../common';
+import { Button } from '../common';
 import { IcoEdit, IcoHeart, IcoTrash } from '../icons';
+import { ProfileImage } from '../user';
 
 interface PostProps extends PostType {
 	isOwner?: boolean;
@@ -73,7 +74,7 @@ export default function Post({
 		<article className='rounded p-4 transition-colors hover:bg-sns-grey-dark'>
 			<div className='flex items-center gap-x-2'>
 				<Link href={`/users/${userId}`} className='flex items-center gap-x-4'>
-					<Profile />
+					<ProfileImage />
 					<h4 className='text-xl'>{user.name}</h4>
 				</Link>
 				<span className='h-1 w-1 rounded-full bg-sns-grey-dark' />
