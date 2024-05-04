@@ -1,12 +1,14 @@
-import { Divider, Profile } from '@/components/common';
-import { GeneralLayout } from '@/components/layouts';
+import { Divider, Loading } from '@/components/common';
 import { Post } from '@/components/post';
+import { Profile } from '@/components/user';
 import { apiRoutes } from '@/constants/routes';
+import BasicContainer from '@/containers/basicContainer';
 import useAuthSession from '@/libs/client/useAuthSession';
 import useFetch from '@/libs/client/useFetch';
 import { PostType } from '@/types/post';
+import Error from 'next/error';
 import { useRouter } from 'next/router';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, Suspense, useEffect, useState } from 'react';
 
 type ResponseData = {
 	data: PostType[];
@@ -17,7 +19,7 @@ export default function Page() {
 	const {
 		query: { id },
 	} = useRouter();
-	const userId = id as string;
+	const userId = typeof id === 'string' ? parseInt(id) : undefined;
 	const {
 		fetchState: { response },
 		get,
@@ -33,29 +35,28 @@ export default function Page() {
 		}
 	}, [id, get, isInitialRender]);
 
-	return user ? (
-		<GeneralLayout user={user}>
-			<section className='mx-auto max-w-4xl overflow-hidden rounded border border-sns-grey-dark'>
-				<div className='h-60 bg-sns-grey-dark'>{/* cover image area */}</div>
-				<div className='relative p-4 pt-16'>
-					<Profile className='absolute left-4 top-0 h-28 w-28 -translate-y-2/3 bg-sns-charcoal' />
-					<h2 className='mb-2 text-3xl'>Username</h2>
-					<p>user description</p>
-				</div>
-			</section>
-			<section className='mx-auto mt-12 flex max-w-4xl flex-col gap-y-8'>
-				{response &&
-					response.data.map((post, index, posts) => (
-						<Fragment key={post.id}>
-							<Post
-								isOwner={user.id === post.userId}
-								loggedInUserId={user.id}
-								{...post}
-							/>
-							{index !== posts.length - 1 && <Divider lightness='DARK' />}
-						</Fragment>
-					))}
-			</section>
-		</GeneralLayout>
-	) : null;
+	return userId ? (
+		<Suspense fallback={<Loading />}>
+			{user && (
+				<BasicContainer user={user}>
+					<Profile />
+					<section className='mx-auto mt-12 flex max-w-4xl flex-col gap-y-8'>
+						{response &&
+							response.data.map((post, index, posts) => (
+								<Fragment key={post.id}>
+									<Post
+										isOwner={user.id === post.userId}
+										loggedInUserId={user.id}
+										{...post}
+									/>
+									{index !== posts.length - 1 && <Divider lightness='DARK' />}
+								</Fragment>
+							))}
+					</section>
+				</BasicContainer>
+			)}
+		</Suspense>
+	) : (
+		<Error statusCode={404} />
+	);
 }

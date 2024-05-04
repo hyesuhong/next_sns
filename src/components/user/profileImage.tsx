@@ -6,7 +6,7 @@ type ProfileProps = {
 	className?: string;
 };
 
-export default function Profile({ imgUrl, className }: ProfileProps) {
+export default function ProfileImage({ imgUrl, className }: ProfileProps) {
 	return (
 		<span
 			className={`flex h-12 w-12 overflow-hidden rounded-full border-2 border-sns-white ${className ? className : 'relative'}`}
